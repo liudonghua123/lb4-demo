@@ -1,6 +1,6 @@
 {
   "name": "db",
   "connector": "loopback-connector-sqlite3",
-  "file": "./test.db",
+  "file": "./db/data.db",
   "debug": true
 }
