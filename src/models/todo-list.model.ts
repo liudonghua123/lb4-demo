@@ -1,7 +1,9 @@
 import {Entity, model, property} from '@loopback/repository';
+import {hasMany} from '@loopback/repository';
+import {Todo} from './todo.model';
 
 @model()
-export class Todo extends Entity {
+export class TodoList extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -17,17 +19,12 @@ export class Todo extends Entity {
   @property({
     type: 'string',
   })
-  desc?: string;
+  color?: string;
 
-  @property({
-    type: 'boolean',
-  })
-  isComplete?: boolean;
+  @hasMany(() => Todo)
+  todos?: Todo[];
 
-  @property()
-  todoListId: number;
-
-  constructor(data?: Partial<Todo>) {
+  constructor(data?: Partial<TodoList>) {
     super(data);
   }
 }
