@@ -9,6 +9,8 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import * as path from 'path';
 import {MySequence} from './sequence';
+import {SchemaMigrationOptions} from './datasources';
+import {TodoRepository} from './repositories';
 
 export class StarterApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -38,5 +40,20 @@ export class StarterApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  async migrateSchema(options?: SchemaMigrationOptions) {
+    // 1. Run migration scripts provided by connectors
+    await super.migrateSchema(options);
+
+    // 2. Make further changes. When creating predefined model instances,
+    // handle the case when these instances already exist.
+    const todoRepo = await this.getRepository(TodoRepository);
+    const found = await todoRepo.findOne({where: {title: 'welcome'}});
+    if (found) {
+      todoRepo.updateById(found.id, {isComplete: false});
+    } else {
+      await todoRepo.create({title: 'welcome', isComplete: false});
+    }
   }
 }
