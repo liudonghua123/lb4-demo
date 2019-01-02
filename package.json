@@ -29,6 +29,7 @@
     "migrate": "node ./dist/src/migrate",
     "prestart": "npm run build",
     "start": "node .",
+    "dev": "nodemon",
     "prepublishOnly": "npm run test"
   },
   "repository": {
@@ -59,5 +60,18 @@
     "@loopback/testlab": "^1.0.3",
     "@loopback/tslint-config": "^1.0.0",
     "@types/node": "^10.11.2"
+  },
+  "nodemonConfig": {
+    "ignore": ["test/*", "docs/*"],
+    "delay": "2500",
+    "watch": [
+      "src/"
+    ],
+    "verbose": true,
+    "exec": "npm start",
+    "execMap": {
+      "js": "node --harmony"
+    },
+    "ext": "js,json,ts"
   }
 }
